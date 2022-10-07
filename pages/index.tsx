@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-const Home: NextPage = ({ person }) => {
+const Home: NextPage = ({ person }: any) => {
   return (
     <div className={styles.container}>
       <Head>
