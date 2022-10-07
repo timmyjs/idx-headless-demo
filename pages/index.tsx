@@ -1,9 +1,34 @@
-import type { NextPage } from 'next'
+import { createClient } from 'contentful';
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+const space = "nea83a3vgwbw";
+const environment = "master";
+const accessToken = "98JhTiEp9IHsEMtuDyGGsFUUUhg5gBaKSIE4CWij5xM";
+
+type Person = {
+  name: string;
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const client = createClient({
+    space,
+    environment,
+    accessToken,
+  });
+
+  const data = await client.getEntry<Person>("1xbUo6UNkSjnsbDGw4xNZ4");
+
+  return {
+    props: {
+      person: { ...data.fields },
+    },
+  };
+};
+
+const Home: NextPage = ({ person }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,7 +39,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://nextjs.org">{person.name}, with the age of {person.age}</a>
         </h1>
 
         <p className={styles.description}>
